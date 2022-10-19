@@ -1,21 +1,48 @@
+from random import choices
 from django.db import models
+from django.forms import DateField
 
 class Member(models.Model):
-  uid = models.IntegerField
-  dateOfBirth = models.DateField
-  username = models.CharField(max_length=50, unique=True)
-  name = models.CharField(max_length=100)
-  classification = models.CharField(max_length=100)
-  language = models.CharField(max_length=100)
+   uid = models.IntegerField(primary_key=True)
+   dateOfBirth = models.DateField()
+   email = models.CharField(max_length=50)
+   username = models.CharField(max_length=50, unique=True)
+   password = models.CharField(max_length=50)
+   first_name = models.CharField(max_length=100)
+   last_name = models.CharField(max_length=100)
 
 
 class Task(models.Model):
-   name = models.CharField(max_length=100)
-   birth_year = models.CharField(max_length=10)
-   eye_color = models.CharField(max_length=10)
+   STATUS_CODES = (
+        ('NS', 'Not Started'),
+        ('F', 'Finished'),
+        ('IP', 'In Progress'),
+    )
+
+   uid = models.IntegerField(primary_key=True)
+   task_id = models.IntegerField()
+   task_name = models.CharField(max_length=100)
+   task_description = models.CharField(max_length=100)
+   status = models.CharField(max_length=2, choices=STATUS_CODES)
+   task_created = models.DateField()
+   task_started = models.DateField()
+   task_due = models.DateField()
+   priority = models.IntegerField()
+
+   class Meta:
+      unique_together = [['uid', 'task_id']]
 
 class Tag(models.Model):
-   name = models.CharField(max_length=100)
-   birth_year = models.CharField(max_length=10)
-   eye_color = models.CharField(max_length=10)
-   species = models.ForeignKey(Species, on_delete=models.DO_NOTHING)
+   uid = models.IntegerField(primary_key=True)
+   tag_name = models.CharField(max_length=100)
+   color = models.CharField(max_length=10)
+   class Meta:
+      unique_together = [['uid', 'tag_name']]
+   
+
+class Tasks_in_tags(models.Model):
+   tag_name = models.CharField(max_length=10, primary_key=True)
+   uid = models.IntegerField()
+   task_id = models.IntegerField()
+   class Meta:
+      unique_together = [['uid', 'tag_name', 'task_id']]

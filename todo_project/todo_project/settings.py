@@ -30,9 +30,12 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
+# Run python manage.py makemigrations and python manage.py migrate first
+
 INSTALLED_APPS = [
     'rest_framework',
     'todo.apps.TodoConfig',
+    # 'todo',  # to use models in todo dir
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -77,8 +80,15 @@ WSGI_APPLICATION = 'todo_project.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'testdb',
+        'USER': 'webapp',
+        'PASSWORD': 'cs348user',
+        'HOST': '129.153.61.57',
+        'PORT': '3306',
+        'OPTIONS': {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"  
+        }
     }
 }
 
