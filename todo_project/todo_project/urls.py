@@ -20,5 +20,6 @@ from todo import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     # path('home/', include('todo.urls')),
-    path('members/', views.MemberList)
+    path('members/', views.MemberList),
+    path('members/<int:uid>', views.OneMember),
 ]
