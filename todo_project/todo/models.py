@@ -24,10 +24,10 @@ class Task(models.Model):
    task_name = models.CharField(max_length=100)
    task_description = models.CharField(max_length=100)
    status = models.CharField(max_length=2, choices=STATUS_CODES)
-   task_created = models.DateField()
-   task_started = models.DateField()
-   task_due = models.DateField()
-   priority = models.IntegerField()
+   task_created = models.DateField(null=True)
+   task_started = models.DateField(null=True)
+   task_due = models.DateField(null=True)
+   priority = models.IntegerField(null=True)
 
    class Meta:
       unique_together = [['uid', 'task_id']]
