@@ -9,9 +9,9 @@ class MemberSerializer(serializers.ModelSerializer):
 class TaskSerializer(serializers.ModelSerializer):
     class Meta:
         model = Task
-        fields = ('uid', 'task_id', 'task_name', 'task_description', 'status', 'task_created', 'task_started', 'task_due', 'priority')
+        fields = ('username', 'task_id', 'task_name', 'task_description', 'status', 'task_created', 'task_started', 'task_due', 'priority')
 
 class TagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tag
-        fields = ('uid', 'tag_name', 'color')
+        fields = ('username', 'tag_name', 'color')

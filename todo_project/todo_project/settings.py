@@ -88,7 +88,7 @@ WSGI_APPLICATION = 'todo_project.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'testdb',
+        'NAME': 'mytodo',
         'USER': 'webapp',
         'PASSWORD': 'cs348user',
         'HOST': '129.153.61.57',
