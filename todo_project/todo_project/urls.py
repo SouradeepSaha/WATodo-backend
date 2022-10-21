@@ -21,7 +21,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     # path('home/', include('todo.urls')),
     path('members/', views.MemberList),
-    path('members/<int:uid>', views.OneMember),
+    path('members/<str:username>', views.OneMember),
     path('tasks/', views.TaskList),
-    path('tasks/<int:uid>', views.OneTask),
+    path('tasks/<str:username>/<str:task_name>/', views.OneTask),
 ]

@@ -32,9 +32,9 @@ def MemberList(request):
 
 
 @api_view(['GET', "PUT", "DELETE"])
-def OneMember(request, uid):
+def OneMember(request, username):
     try:
-        mem = Member.objects.get(pk=uid)
+        mem = Member.objects.get(username=username)
     except Member.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
@@ -66,9 +66,9 @@ def TaskList(request):
 
 
 @api_view(['GET', "PUT", "DELETE"])
-def OneTask(request, uid):
+def OneTask(request, username, task_name):
     try:
-        task = Task.objects.get(pk=uid)
+        task = Task.objects.get(username=username,task_name=task_name)
     except Member.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
@@ -84,4 +84,3 @@ def OneTask(request, uid):
     elif request.method == 'DELETE':
         task.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-        
