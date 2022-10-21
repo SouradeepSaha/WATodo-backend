@@ -1,6 +1,6 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from django import views
+from django.http import JsonResponse
 from rest_framework import viewsets, status
 from todo.serializers import MemberSerializer, TaskSerializer, TagSerializer
 from todo.models import Member, Task, Tag
@@ -36,7 +36,7 @@ def OneMember(request, username):
     try:
         mem = Member.objects.get(username=username)
     except Member.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
+        return JsonResponse({})
 
     if request.method == 'GET':
         serializer = MemberSerializer(mem)
