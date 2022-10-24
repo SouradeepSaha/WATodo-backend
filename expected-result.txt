@@ -1,0 +1,26 @@
+Feature 1 & 2 expected result:
+insert into todo_member values("oneMember","member@outlook.com", 12345, "John", "Smith");
+select * from todo_member where username = "oneMember";
+
++-----------+--------------------+----------+------------+-----------+
+| username  | email              | password | first_name | last_name |
++-----------+--------------------+----------+------------+-----------+
+| oneMember | member@outlook.com | 12345    | John       | Smith     |
++-----------+--------------------+----------+------------+-----------+
+
+Feature 3 expected result:
+
+
+Feature 4 expected result:
+update todo_member set username = 'twoMember' where username = "oneMember";
+mysql> select * from todo_member where username = "oneMember";
+mysql> select * from todo_member where username = "twoMember";
+
+Empty set (0.04 sec)
+
+mysql> select * from todo_member where username = "twoMember";
++-----------+--------------------+----------+------------+-----------+
+| username  | email              | password | first_name | last_name |
++-----------+--------------------+----------+------------+-----------+
+| twoMember | member@outlook.com | 12345    | John       | Smith     |
++-----------+--------------------+----------+------------+-----------+
