@@ -1,38 +1,32 @@
-const Member = require('./member.model')(sequelize)
-const Tag = require('./tag.model')(sequelize)
-
-module.exports = (sequelize, Sequelize) => {
+module.exports = (sequelize, DataTypes) => {
   const Task = sequelize.define("Task", {
     task_id: {
-      type: Sequelize.INTEGER,
+      type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true
     },
     task_name: {
-      type: Sequelize.STRING,
+      type: DataTypes.STRING,
       allowNull: false
     },
     description: {
-      type: Sequelize.STRING
+      type: DataTypes.STRING
     },
     status: {
-      type: Sequelize.ENUM,
+      type: DataTypes.ENUM,
       values: ['Completed', 'Not Started', 'In Progress'],
       default: 'Not Started'
     },
     due_date: {
-      type: Sequelize.DATE
+      type: DataTypes.DATE
     },
     priority: {
-      type: Sequelize.INTEGER,
+      type: DataTypes.INTEGER,
       validate: {
         min: 1,
         max: 5
       }
     }
   });
-  Task.belongsTo(Member);
-  Task.belongsToMany(Tag, { through: 'TagTask' });
-
   return Task;
 };
