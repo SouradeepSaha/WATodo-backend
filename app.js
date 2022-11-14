@@ -4,7 +4,7 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const cors = require('cors');
-const cb = require("./models");
+const db = require("./models");
 
 const app = express();
 var corsOptions = {
@@ -34,14 +34,13 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-cb(function (db) {
-  db.sequelize.sync()
-    .then(() => {
-      console.log("Synced db.");
-    })
-    .catch((err) => {
-      console.log("Failed to sync db: " + err.message);
-    });
-});
+
+db.sequelize.sync()
+  .then(() => {
+    console.log("Synced db.");
+  })
+  .catch((err) => {
+    console.log("Failed to sync db: " + err.message);
+  });
 
 module.exports = app;
