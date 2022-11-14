@@ -1,5 +1,5 @@
 const db = require("../models");
-const Tags = db.Tag;
+const Tags = db.tags;
 
 // Create and Save a new tag
 exports.create = (req, res) => {
@@ -13,10 +13,11 @@ exports.create = (req, res) => {
 
   // Create a tag
   const tag = {
-    userId: req.body.user_id,
+    MemberUserId: req.body.user_id,
     tag_name: req.body.tag_name,
     color: req.body.color,    
   };
+  console.log(tag);
 
   // Save tag in the database
   Tags.create(tag)
@@ -39,7 +40,7 @@ exports.findAll = (req, res) => {
     const paramUserId = req.params.user_id;
   
     Tags.findAll({ where: {
-        userId: paramUserId
+      MemberUserId: paramUserId
     } })
       .then(data => {
         res.send(data);

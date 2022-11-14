@@ -3,7 +3,7 @@ var router = require("express").Router();
 
 module.exports = app => {
   // Create a new Tag
-  router.post("/tags", tag.create);
+  router.post("/", tag.create);
 
   // Retrieve all Tags
   router.get("/:user_id", tag.findAll);
