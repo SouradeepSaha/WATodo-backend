@@ -3,19 +3,19 @@ var router = require("express").Router();
 
 module.exports = app => {
   // Create a new Tag
-  router.post("/", tag.create);
+  router.post("/tags", tag.create);
 
   // Retrieve all Tags
-  router.get("/", tag.findAll);
+  router.get("/:user_id", tag.findAll);
 
   // Retrieve a single Tag with id
-  router.get("/:id", tag.findOne);
+  router.get("/:user_id/:tag_id", tag.findOne);
 
-  // Update a Tag with id
-  router.put("/:id", tag.update);
+  // // Update a Tag with id
+  // router.put("/:id", tag.update);
 
   // Delete a Tag with id
-  router.delete("/:id", tag.delete);
+  router.delete("/:tag_id", tag.delete);
 
   app.use('/tags', router);
 };

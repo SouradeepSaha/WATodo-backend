@@ -19,7 +19,7 @@ module.exports = (sequelize, Sequelize) => {
       default: "ffffff"
     },
   });
-  Tag.belongsTo(Member);
+  Tag.belongsTo(Member, {foreignKey: "userId"});
   Tag.belongsToMany(Task, { through: 'TagTask' });
 
   return Tag;

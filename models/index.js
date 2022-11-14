@@ -19,6 +19,8 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
-db.tutorials = require("./tutorial.model.js")(sequelize, Sequelize);
+db.Member = require("./member.model.js")(sequelize, Sequelize);
+db.Tag = require("./tag.model.js")(sequelize, Sequelize);
+db.Task = require("./task.model.js")(sequelize, Sequelize);
 
 module.exports = db;
