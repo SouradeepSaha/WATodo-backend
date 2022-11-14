@@ -1,6 +1,6 @@
 const dbConfig = require("../config/db.config.js");
 
-const Sequelize = require("sequelize");
+const { Sequelize, DataTypes } = require("sequelize");
 const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
   host: dbConfig.HOST,
   dialect: dbConfig.dialect,
@@ -14,13 +14,20 @@ const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
   }
 });
 
+var connected = false, callbackList = [];
 const db = {};
 
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
-db.Member = require("./member.model.js")(sequelize, Sequelize);
-db.Tag = require("./tag.model.js")(sequelize, Sequelize);
-db.Task = require("./task.model.js")(sequelize, Sequelize);
+db.members = require("./member.model.js")(sequelize, DataTypes);
+db.tasks = require("./task.model.js")(sequelize, DataTypes);
+db.tags = require("./tag.model.js")(sequelize, DataTypes);
+
+db.tags.belongsToMany(db.tasks, { through: 'TagTask' });
+db.tags.belongsTo(db.members);
+
+db.tasks.belongsToMany(db.tags, { through: 'TagTask' });
+db.tasks.belongsTo(db.members);
 
 module.exports = db;

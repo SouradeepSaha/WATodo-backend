@@ -34,6 +34,7 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
+
 db.sequelize.sync()
   .then(() => {
     console.log("Synced db.");
