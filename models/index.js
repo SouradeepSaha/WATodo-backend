@@ -23,6 +23,8 @@ db.sequelize = sequelize;
 db.members = require("./member.model.js")(sequelize, DataTypes);
 db.tasks = require("./task.model.js")(sequelize, DataTypes);
 db.tags = require("./tag.model.js")(sequelize, DataTypes);
+// db.tagtasks = require("./TagTask.model.js")(sequelize, DataTypes); // tried this to see if we can access through table, but didn't work
+
 
 db.tags.belongsToMany(db.tasks, { through: 'TagTask' });
 db.tags.belongsTo(db.members);

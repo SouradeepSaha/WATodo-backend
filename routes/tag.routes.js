@@ -9,7 +9,7 @@ module.exports = app => {
   router.get("/:user_id", tag.findAll);
 
   // Retrieve a single Tag with id
-  router.get("/:user_id/:tag_id", tag.findOne);
+  router.get("/tag/:tag_id", tag.findOne);
 
   // // Update a Tag with id
   // router.put("/:id", tag.update);

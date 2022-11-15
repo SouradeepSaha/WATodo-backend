@@ -44,8 +44,8 @@ db.sequelize.sync()
   });
 
 require("./routes/tag.routes")(app);
-require("./routes/member.routes")(app);
-require("./routes/task.routes")(app);
+// require("./routes/member.routes")(app);
+// require("./routes/task.routes")(app);
 
 
 // set port, listen for requests

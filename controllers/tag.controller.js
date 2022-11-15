@@ -1,5 +1,10 @@
 const db = require("../models");
 const Tags = db.tags;
+const Tasks = db.tasks;
+const TagTask = db.tagtasks;
+const { QueryTypes } = require('sequelize');
+const tagModel = require("../models/tag.model");
+
 
 // Create and Save a new tag
 exports.create = (req, res) => {
@@ -35,43 +40,128 @@ exports.create = (req, res) => {
     });
 };
 
-// Retrieve all tags of a user from the database.
-exports.findAll = (req, res) => {
+// Retrieve all tasks of a user from the database.
+exports.findAll = async (req, res) => {
     const paramUserId = req.params.user_id;
-  
-    Tags.findAll({ where: {
-      MemberUserId: paramUserId
-    } })
-      .then(data => {
-        res.send(data);
-      })
-      .catch(err => {
+    console.log(paramUserId);
+
+    try {
+      const tagIds = await db.sequelize.query(`
+        select distinct tag_id, tag_name, color from Tags
+        where MemberUserId = ${paramUserId}`
+      );
+      console.log("tagIds:", tagIds);
+
+      const tagIdsPrimmed = tagIds[0];
+      // somehow same thing got outputted twice
+
+      let response = [];
+      for(let i = 0; i < tagIdsPrimmed.length; i++) {
+        const taskIds = await db.sequelize.query(`
+          select TaskTaskId from TagTask
+          where TagTagId = ${tagIdsPrimmed[i]["tag_id"]}      
+        `, { type: QueryTypes.SELECT });
+        response.push({
+          tag_id: tagIdsPrimmed[i]["tag_id"],
+          tag_color: tagIdsPrimmed[i]["color"],
+          tag_name:  tagIdsPrimmed[i]["tag_name"],
+          tasks: taskIds
+        })
+      }
+
+      res.send(response);
+    } catch(err) {      
         res.status(500).send({
           message:
-            err.message || `Some error occurred while retrieving ${queryUserId}'s tags.`
+            err.message || `Some error occurred while retrieving ${paramUserId}'s tags.`
         });
-      });
+    }
+
+
+    // TagTask.findAll({
+    //   attributes: ['task_id'],
+    //   where: {
+    //     tag_id: [
+    //       Tags.findAll({ 
+    //         attributes: ['tag_id'],
+    //         where: {
+    //         MemberUserId: paramUserId
+    //       } })
+    //     ]
+    //   }
+    // })
+
+
+    // Tags.findAll({ 
+    //   attributes: ['tag_id'],
+    //   where: {
+    //   MemberUserId: paramUserId
+    // } }).then(data => {
+    //   console.log("data:", data);
+    //   TagTask.findAll({
+    //       attributes: ['task_id'],
+    //       where: {
+    //         tag_id: [
+    //           data
+    //         ]
+    //       }
+    //     })
+    //   })
+      // .then(data => {
+      //   res.send(data);
+      // })
+      // .catch(err => {
+      //   res.status(500).send({
+      //     message:
+      //       err.message || `Some error occurred while retrieving ${queryUserId}'s tags.`
+      //   });
+      // });
 };
 
-// Find a single tag with tag_id
-exports.findOne = (req, res) => {
+// Find all tasks with this tag_id
+exports.findOne = async (req, res) => {
     const paramTagid = req.params.tag_id;
 
-    Tags.findByPk(paramTagid)
-      .then(data => {
-        if (data) {
-          res.send(data);
-        } else {
-          res.status(404).send({
-            message: `Cannot find tag with id=${paramTagid}.`
-          });
-        }
-      })
-      .catch(err => {
+    try {
+      const taskIds = await db.sequelize.query(`
+      select TaskTaskId from TagTask
+      where TagTagId = ${paramTagid}
+      `, { type: QueryTypes.SELECT });
+
+      const tagInfo = await db.sequelize.query(`
+      select tag_id, tag_name, color from Tags
+      where tag_id = ${paramTagid}
+      `, { type: QueryTypes.SELECT });
+
+      console.log("taskIds, tagInfo:", taskIds, tagInfo);
+
+      res.send(Object.assign(tagInfo[0], {        
+        tasks: taskIds
+      }));
+    } catch(err) {      
         res.status(500).send({
-          message: "Error retrieving Tutorial with id=" + paramTagid
+          message:
+            err.message || `Some error occurred while retrieving tag ${paramTagid}'s tasks.`
         });
-      });
+    }
+
+    // Tasks.findAll({ where: {
+    //   tag_id: paramTagid
+    // } })
+    //   .then(data => {
+    //     if (data) {
+    //       res.send(data);
+    //     } else {
+    //       res.status(404).send({
+    //         message: `Cannot find tag with id=${paramTagid}.`
+    //       });
+    //     }
+    //   })
+    //   .catch(err => {
+    //     res.status(500).send({
+    //       message: "Error retrieving tag with tag_id=" + paramTagid
+    //     });
+    //   });
 };
 
 // // Update a Tutorial by the id in the request
