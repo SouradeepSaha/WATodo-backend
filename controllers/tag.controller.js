@@ -1,9 +1,6 @@
 const db = require("../models");
 const Tags = db.tags;
-const Tasks = db.tasks;
-const TagTask = db.tagtasks;
 const { QueryTypes } = require('sequelize');
-const tagModel = require("../models/tag.model");
 
 
 // Create and Save a new tag
@@ -76,46 +73,6 @@ exports.findAll = async (req, res) => {
             err.message || `Some error occurred while retrieving ${paramUserId}'s tags.`
         });
     }
-
-
-    // TagTask.findAll({
-    //   attributes: ['task_id'],
-    //   where: {
-    //     tag_id: [
-    //       Tags.findAll({ 
-    //         attributes: ['tag_id'],
-    //         where: {
-    //         MemberUserId: paramUserId
-    //       } })
-    //     ]
-    //   }
-    // })
-
-
-    // Tags.findAll({ 
-    //   attributes: ['tag_id'],
-    //   where: {
-    //   MemberUserId: paramUserId
-    // } }).then(data => {
-    //   console.log("data:", data);
-    //   TagTask.findAll({
-    //       attributes: ['task_id'],
-    //       where: {
-    //         tag_id: [
-    //           data
-    //         ]
-    //       }
-    //     })
-    //   })
-      // .then(data => {
-      //   res.send(data);
-      // })
-      // .catch(err => {
-      //   res.status(500).send({
-      //     message:
-      //       err.message || `Some error occurred while retrieving ${queryUserId}'s tags.`
-      //   });
-      // });
 };
 
 // Find all tasks with this tag_id
@@ -144,24 +101,6 @@ exports.findOne = async (req, res) => {
             err.message || `Some error occurred while retrieving tag ${paramTagid}'s tasks.`
         });
     }
-
-    // Tasks.findAll({ where: {
-    //   tag_id: paramTagid
-    // } })
-    //   .then(data => {
-    //     if (data) {
-    //       res.send(data);
-    //     } else {
-    //       res.status(404).send({
-    //         message: `Cannot find tag with id=${paramTagid}.`
-    //       });
-    //     }
-    //   })
-    //   .catch(err => {
-    //     res.status(500).send({
-    //       message: "Error retrieving tag with tag_id=" + paramTagid
-    //     });
-    //   });
 };
 
 // // Update a Tutorial by the id in the request
