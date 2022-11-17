@@ -24,6 +24,7 @@ db.users = require("./user.model.js")(sequelize, DataTypes);
 db.tasks = require("./task.model.js")(sequelize, DataTypes);
 db.tags = require("./tag.model.js")(sequelize, DataTypes);
 
+
 db.tags.belongsToMany(db.tasks, { through: 'TagTask' });
 db.tags.belongsTo(db.users);
 
