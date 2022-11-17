@@ -4,7 +4,13 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const cors = require('cors');
+const passport = require('passport')
+const session = require('express-session')
+const LocalStrategy = require('passport-local').Strategy
+require('dotenv').config()
+require('./config/passport')
 const db = require("./models");
+
 
 const app = express();
 var corsOptions = {
@@ -16,6 +22,26 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(cors(corsOptions));
+app.use(session({
+  secret: process.env.SESSION_SECRET || "secret",
+  resave: false,
+  saveUninitialized: true,
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+const isAuthenticated = (req,res,next) => {
+  if(req.user)
+     return next();
+  else
+     return res.status(401).json({
+       error: 'User not authenticated'
+     })
+}
+
+app.use(isAuthenticated)
+
 
 
 // catch 404 and forward to error handler

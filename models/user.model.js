@@ -1,5 +1,5 @@
 module.exports = (sequelize, Sequelize) => {
-  const Member = sequelize.define("Member", {
+  const User = sequelize.define("User", {
     user_id: {
       type: Sequelize.INTEGER,
       autoIncrement: true,
@@ -37,6 +37,8 @@ module.exports = (sequelize, Sequelize) => {
       default: false
     }
   });
-
-  return Member;
+  User.prototype.validatePassword = function (password) {
+    return this.password === password;
+  };
+  return User;
 };

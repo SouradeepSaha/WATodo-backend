@@ -1,8 +1,8 @@
 const db = require("../models");
-const Member = db.Members;
+const User = db.users;
 const Op = db.Sequelize.Op;
 
-// Member signup
+// User signup
 exports.signup = (req, res) => {
   // Validate request
   if (!req.body.title) {
@@ -13,9 +13,9 @@ exports.signup = (req, res) => {
   }
 };
 
-// Member login
+// User login
 exports.login = (req, res) => {
-  
+
 };
 
 

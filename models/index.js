@@ -20,14 +20,14 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
-db.members = require("./member.model.js")(sequelize, DataTypes);
+db.users = require("./user.model.js")(sequelize, DataTypes);
 db.tasks = require("./task.model.js")(sequelize, DataTypes);
 db.tags = require("./tag.model.js")(sequelize, DataTypes);
 
 db.tags.belongsToMany(db.tasks, { through: 'TagTask' });
-db.tags.belongsTo(db.members);
+db.tags.belongsTo(db.users);
 
 db.tasks.belongsToMany(db.tags, { through: 'TagTask' });
-db.tasks.belongsTo(db.members);
+db.tasks.belongsTo(db.users);
 
 module.exports = db;
