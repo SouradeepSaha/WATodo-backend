@@ -2,7 +2,7 @@ const db = require("../models");
 const Task = db.Tasks;
 const Op = db.Sequelize.Op;
 
-// Create and Save a new Tutorial
+// Create and Save a new Task
 exports.create = (req, res) => {
      // Validate request
     if (!req.body.task_name || !req.body.user_id) {
