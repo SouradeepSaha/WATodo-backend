@@ -13,6 +13,12 @@ exports.signup = (req, res) => {
   }
 };
 
+exports.logout = function(req, res) {
+  req.session.destroy(function(err) {
+    res.redirect('/');
+  });
+}
+
 // User login
 exports.login = (req, res) => {
 
