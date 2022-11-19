@@ -1,4 +1,3 @@
-const User = require("../controllers/task.controller.js");
 var router = require("express").Router();
 
 module.exports = app => {
@@ -10,8 +9,11 @@ module.exports = app => {
     }
   ));
 
-  // User Login
-  router.get("/login", User.login);
+  router.post("/login", passport.authenticate('local-signin', {
+    successRedirect: '/dashboard',
+    failureRedirect: '/signin'
+  }
+  ));
 
   // User Logout
   router.get("/logout", User.logout);
@@ -19,5 +21,5 @@ module.exports = app => {
   // Delete a User with id
   router.delete("/:id", User.delete);
 
-  app.use('/user', router);
+  app.use('/', router);
 };

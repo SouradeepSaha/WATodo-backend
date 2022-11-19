@@ -2,16 +2,9 @@ const db = require("../models");
 const User = db.users;
 const Op = db.Sequelize.Op;
 
-// User signup
-exports.signup = (req, res) => {
-  // Validate request
-  if (!req.body.title) {
-    res.status(400).send({
-      message: "Content can not be empty!"
-    });
-    return;
-  }
-};
+exports.dashboard = (req, res) => {
+
+}
 
 exports.logout = function(req, res) {
   req.session.destroy(function(err) {
