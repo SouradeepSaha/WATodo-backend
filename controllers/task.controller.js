@@ -2,8 +2,42 @@ const db = require("../models");
 const Task = db.Tasks;
 const Op = db.Sequelize.Op;
 
-// Create and Save a new Tutorial
+// Create and Save a new Task
 exports.create = (req, res) => {
+     // Validate request
+    if (!req.body.task_name || !req.body.user_id) {
+    res.status(400).send({
+      message: "Some task information is missing!"
+    });
+    return;
+    }
+
+    // create a task
+    const task = {
+        MemberUserId: req.body.user_id,
+        task_name: req.body.task_name,
+        description: req.body.description,
+        status: req.body.status,
+        created: req.body.created,
+        due_date: req.body.due_date,
+        priority: req.body.priority
+    };
+    console.log(task);
+
+    // Save Task in database
+    Task.create(task)
+    .then(() => {
+      res.status(201).send({
+        message:
+          "Task created successfully."
+      });;
+    })
+    .catch(err => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while creating the task."
+      });
+    });
 
 };
 
