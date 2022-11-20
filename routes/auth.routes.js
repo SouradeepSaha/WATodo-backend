@@ -28,6 +28,9 @@ module.exports = (app, passport) => {
     });
   });
 
+  // Verify User
+  router.get("/verify", User.verify);
+
   // Dashboard
   router.get("/dashboard/:user_id", isLoggedIn, User.dashboard);
 

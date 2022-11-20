@@ -35,6 +35,10 @@ module.exports = (sequelize, Sequelize) => {
     verified: {
       type: Sequelize.BOOLEAN,
       default: false
+    },
+    verificationCode: {
+      type: Sequelize.INTEGER,
+      allowNull: false
     }
   });
   User.prototype.validatePassword = function (password) {

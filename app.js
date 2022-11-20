@@ -25,6 +25,7 @@ app.use(session({
   secret: process.env.SESSION_SECRET || "secret",
   resave: false,
   saveUninitialized: true,
+  cookie:{_expires : 60000000}
 }));
 
 app.use(passport.initialize());
