@@ -29,7 +29,7 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.STRING,
       allowNull: false,
       validate: {
-        isAlpha: true
+        is: /^[a-z ,.'-]+$/i
       }
     },
     verified: {

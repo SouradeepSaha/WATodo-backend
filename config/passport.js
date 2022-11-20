@@ -6,7 +6,6 @@ const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy
 const bCrypt = require('bcryptjs');
 
-
 passport.use('local-signup', new LocalStrategy({
     usernameField: 'email',
     passwordField: 'password',
@@ -20,21 +19,18 @@ passport.use('local-signup', new LocalStrategy({
       where: {
         email: email
       }
-    }).then(function(user) {
-      if (user)
-      {
+    }).then(function (user) {
+      if (user) {
         return done(null, false, {
-          message: 'That email is already taken'
+          message: 'The email is already taken'
         });
-      } else
-      {
+      } else {
         var userPassword = generateHash(password);
-        var data =
-        {
+        var data = {
           email: email,
           password: userPassword,
-          firstname: req.body.firstname,
-          lastname: req.body.lastname
+          name: req.body.name,
+          username: req.body.username
         };
         User.create(data).then(function(newUser, created) {
           if (!newUser) {
@@ -57,7 +53,6 @@ passport.use('local-signin', new LocalStrategy(
       passReqToCallback: true // allows us to pass back the entire request to the callback
   },
   function(req, email, password, done) {
-      var User = user;
       var isValidPassword = function(userpass, password) {
           return bCrypt.compareSync(password, userpass);
       }
@@ -81,18 +76,18 @@ passport.use('local-signin', new LocalStrategy(
       }).catch(function(err) {
           console.log("Error:", err);
           return done(null, false, {
-              message: 'Something went wrong with your Signin'
+              message: 'Something went wrong with your Login'
           });
       });
   }
 ));
 
 passport.serializeUser(function(user, done) {
-  done(null, user.id);
+  done(null, user);
 });
 
-passport.deserializeUser(function (id, done) {
-  User.findByPk(id).then(function (user) {
+passport.deserializeUser(function (user, done) {
+  User.findByPk(user.user_id).then(function (user) {
     if (user) {
       done(null, user.get());
     } else {

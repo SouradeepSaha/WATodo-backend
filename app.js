@@ -6,7 +6,6 @@ const logger = require('morgan');
 const cors = require('cors');
 const passport = require('passport')
 const session = require('express-session')
-const LocalStrategy = require('passport-local').Strategy
 require('dotenv').config()
 const db = require("./models");
 require('./config/passport')
@@ -31,18 +30,9 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-const isAuthenticated = (req,res,next) => {
-  if(req.user)
-     return next();
-  else
-     return res.status(401).json({
-       error: 'User not authenticated'
-     })
-}
-
-app.use(isAuthenticated)
-
-
+require("./routes/tag.routes")(app);
+require("./routes/auth.routes")(app,passport);
+// require("./routes/task.routes")(app);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -57,7 +47,8 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.send("Error invaild request");
+  console.log(err);
+  res.send(err.message);
 });
 
 
@@ -69,10 +60,5 @@ db.sequelize.sync()
     console.log("Failed to sync db: " + err.message);
   });
 
-require("./routes/tag.routes")(app);
-// require("./routes/member.routes")(app);
-// require("./routes/task.routes")(app);
-
 
 module.exports = app;
-//test

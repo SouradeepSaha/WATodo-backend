@@ -3,32 +3,20 @@ const User = db.users;
 const Op = db.Sequelize.Op;
 
 exports.dashboard = (req, res) => {
-
+  res.send("Will render dashboard");
 }
-
-exports.logout = function(req, res) {
-  req.session.destroy(function(err) {
-    res.redirect('/');
-  });
-}
-
-// User login
-exports.login = (req, res) => {
-
-};
-
 
 // Delete a User with the specified id in the request
 exports.delete = (req, res) => {
   const user_id = req.params.id;
 
-  Member.destroy({
+  User.destroy({
     where: { user_id: user_id }
   })
     .then(num => {
       if (num == 1) {
         res.status(200).send({
-          message: "Member deleted"
+          message: "User deleted"
         });
       } else { // Code should not reach here
         res.status(500).send({

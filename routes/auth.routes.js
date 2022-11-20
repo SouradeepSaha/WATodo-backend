@@ -1,25 +1,35 @@
-var router = require("express").Router();
+const router = require("express").Router();
+const User = require("../controllers/user.controller");
 
-module.exports = app => {
+module.exports = (app, passport) => {
 
-  // User Signup
-  router.post("/signup", passport.authenticate('local-signup', {
-    successRedirect: '/dashboard',
-    failureRedirect: '/signup'
-    }
-  ));
-
-  router.post("/login", passport.authenticate('local-signin', {
-    successRedirect: '/dashboard',
-    failureRedirect: '/signin'
+  function isLoggedIn(req, res, next) {
+    if (req.isAuthenticated())
+      return next();
+    res.status(401).send("Not Authorized");
   }
-  ));
+
+  //User Signup
+  router.post("/signup", passport.authenticate('local-signup', { failureMessage: true }),
+  function (req, res) {
+    res.status(200).send("Success");
+  });
+
+  // User Login
+  router.post("/login", passport.authenticate('local-signin', { failureMessage: true }),
+    function (req, res) {
+    res.redirect('/dashboard/' + req.user.user_id);
+  });
 
   // User Logout
-  router.get("/logout", User.logout);
+  router.get("/logout", function(req, res) {
+    req.session.destroy(function(err) {
+      res.status(200).send("Success");
+    });
+  });
 
-  // Delete a User with id
-  router.delete("/:id", User.delete);
+  // Dashboard
+  router.get("/dashboard/:user_id", isLoggedIn, User.dashboard);
 
   app.use('/', router);
 };
