@@ -42,6 +42,7 @@ exports.create = (req, res) => {
 
 };
 
+// recheck
 // List of all tasks embedded with users
 exports.findAll = async (req, res) => {
     const paramUserId = req.params.user_id;
@@ -55,22 +56,25 @@ exports.findAll = async (req, res) => {
       console.log("taskIds:", taskIds);
 
       const taskIdsPrimmed = taskIds[0];
-      // somehow same thing got outputted twice
 
       let response = [];
-      /*/
+      
       for(let i = 0; i < taskIdsPrimmed.length; i++) {
         const taskIds = await db.sequelize.query(`
           select TaskTaskId from TagTask
           where TagTagId = ${tagIdsPrimmed[i]["tag_id"]}      
         `, { type: QueryTypes.SELECT });
         response.push({
-          tag_id: tagIdsPrimmed[i]["tag_id"],
-          tag_color: tagIdsPrimmed[i]["color"],
-          tag_name:  tagIdsPrimmed[i]["tag_name"],
+          task_id: taskIdsPrimmed[i]["tag_id"],
+          task_name: taskIdsPrimmed[i]["task_name"],
+          description: taskIdsPrimmed[i]["description"],
+          status: taskIdsPrimmed[i]["status"],
+          created: taskIdsPrimmed[i]["created"],
+          due_date: taskIdsPrimmed[i]["due_date"],
+          priority: taskIdsPrimmed[i]["priority"],
           tasks: taskIds
         })
-      }*/
+      }
 
       res.send(response);
     } catch(err) {      
