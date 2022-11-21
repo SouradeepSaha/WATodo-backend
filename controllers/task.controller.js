@@ -61,8 +61,8 @@ exports.findAll = async (req, res) => {
       
       for(let i = 0; i < taskIdsPrimmed.length; i++) {
         const taskIds = await db.sequelize.query(`
-          select TaskTaskId from TagTask
-          where TagTagId = ${tagIdsPrimmed[i]["tag_id"]}      
+          select task_id from Tasks
+          where task_id = ${taskIdsPrimmed[i]["task_id"]}      
         `, { type: QueryTypes.SELECT });
         response.push({
           task_id: taskIdsPrimmed[i]["tag_id"],
