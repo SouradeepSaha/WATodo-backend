@@ -6,7 +6,7 @@ const Op = db.Sequelize.Op;
 exports.create = (req, res) => {
      // Validate request
      // check for null values too? "!due_date"?
-    if (!req.body.task_name || !req.body.user_id) {
+    if (!req.body.task_name || !req.body.user_id || req.body.description || req.body.status || req.body.created || req.body.due_date || req.body.priority) {
     res.status(400).send({
       message: "Some task information is missing!"
     });
@@ -42,7 +42,7 @@ exports.create = (req, res) => {
 
 };
 
-// List of all tags embedded with users
+// List of all tasks embedded with users
 exports.findAll = async (req, res) => {
     const paramUserId = req.params.user_id;
     console.log(paramUserId);
@@ -82,7 +82,7 @@ exports.findAll = async (req, res) => {
 };
 
 
-// Delete a tag with the specified tag_id in the request
+// Delete a task with the specified task_id in the request
 exports.delete = (req, res) => {
     const paramTaskid = req.params.task_id;
 
