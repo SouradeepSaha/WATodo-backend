@@ -2,6 +2,9 @@ const db = require("../models");
 const Task = db.Tasks;
 const Op = db.Sequelize.Op;
 
+console.log('Hello World!')
+// Create, Delete, Update, Find One, Find all
+
 // Create and Save a new Task
 exports.create = (req, res) => {
      // Validate request
@@ -31,7 +34,7 @@ exports.create = (req, res) => {
       res.status(201).send({
         message:
           "Task created successfully."
-      });;
+      });
     })
     .catch(err => {
       res.status(500).send({
@@ -42,7 +45,6 @@ exports.create = (req, res) => {
 
 };
 
-// recheck
 // List of all tasks embedded with users
 exports.findAll = async (req, res) => {
     const paramUserId = req.params.user_id;
@@ -85,6 +87,51 @@ exports.findAll = async (req, res) => {
     }
 };
 
+// Find a single Task with a task_id
+exports.findOne = (req, res) => {
+  const paramTaskid = req.params.task_id;
+
+  Task.findByPk(paramTaskid)
+    .then(data => {
+      if (data) {
+        res.send(data);
+      } else {
+        res.status(404).send({
+          message: `Cannot find Task with task_id=${paramTaskid}.`
+        });
+      }
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: "Error retrieving Task with task_id=" + paramTaskid
+      });
+    });
+};
+
+// Update a task by the id in the request
+exports.update = (req, res) => {
+  const task_id = req.params.task_id;
+
+  Task.update(req.body, {
+    where: { task_id: task_id }
+  })
+    .then(num => {
+      if (num == 1) {
+        res.send({
+          message: "Task was updated successfully."
+        });
+      } else {
+        res.send({
+          message: `Cannot update Task with task_id=${task_id}. Maybe task was not found or req.body is empty!`
+        });
+      }
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: "Error updating task with id=" + task_id
+      });
+    });
+};
 
 // Delete a task with the specified task_id in the request
 exports.delete = (req, res) => {
@@ -111,33 +158,3 @@ exports.delete = (req, res) => {
       });
 };
 
-// Find a single Task with a task_id
-exports.findOne = (req, res) => {
-  const paramTaskid = req.params.task_id;
-
-  Task.findByPk(paramTaskid)
-    .then(data => {
-      if (data) {
-        res.send(data);
-      } else {
-        res.status(404).send({
-          message: `Cannot find Task with task_id=${paramTaskid}.`
-        });
-      }
-    })
-    .catch(err => {
-      res.status(500).send({
-        message: "Error retrieving Task with task_id=" + paramTaskid
-      });
-    });
-};
-
-// Update a Tutorial by the id in the request
-// exports.update = (req, res) => {
-
-// };
-
-// Find all Tasks
-// exports.findAllPublished = (req, res) => {
-
-// };
