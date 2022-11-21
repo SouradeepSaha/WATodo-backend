@@ -133,11 +133,6 @@ exports.findOne = (req, res) => {
 
 // };
 
-// Delete all Tasks from the database.
-// exports.deleteAll = (req, res) => {
-
-// };
-
 // Find all Tasks
 // exports.findAllPublished = (req, res) => {
 
