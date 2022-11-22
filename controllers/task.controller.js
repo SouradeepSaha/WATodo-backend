@@ -1,15 +1,14 @@
 const db = require("../models");
-const Task = db.Tasks;
-const Op = db.Sequelize.Op;
+const Task = db.tasks;
+const { QueryTypes } = require('sequelize');
 
-console.log('Hello World!')
 // Create, Delete, Update, Find One, Find all
 
 // Create and Save a new Task
 exports.create = (req, res) => {
      // Validate request
      // check for null values too? "!due_date"?
-    if (!req.body.task_name || !req.body.user_id || req.body.description || req.body.status || req.body.created || req.body.due_date || req.body.priority) {
+    if (!req.body.task_name || !req.body.user_id) {
     res.status(400).send({
       message: "Some task information is missing!"
     });
@@ -18,13 +17,13 @@ exports.create = (req, res) => {
 
     // create a task
     const task = {
-        MemberUserId: req.body.user_id,
+        UserUserId: req.body.user_id,
         task_name: req.body.task_name,
-        description: req.body.description,
-        status: req.body.status,
-        created: req.body.created,
-        due_date: req.body.due_date,
-        priority: req.body.priority
+        description: req.body?.description, // ? req.body.description : NULL,
+        status: req.body?.status, //? req.body.status : NULL,
+        created: req.body?.created, //? req.body.created : NULL,
+        due_date: req.body?.due_date,// ? req.body.due_date : NULL,
+        priority: req.body?.priority //? req.body.priority : 5
     };
     console.log(task);
 
@@ -42,39 +41,41 @@ exports.create = (req, res) => {
           err.message || "Some error occurred while creating the task."
       });
     });
-
 };
 
 // List of all tasks embedded with users
 exports.findAll = async (req, res) => {
     const paramUserId = req.params.user_id;
-    console.log(paramUserId);
+    console.log("paramUserId", paramUserId);
 
     try {
       const taskIds = await db.sequelize.query(`
-        select distinct task_id, task_name, description, status, created, due_date, priority from Tasks
-        where MemberUserId = ${paramUserId}`
+        select distinct task_id, task_name, description, status, createdAt, updatedAt, due_date, priority from Tasks
+        where UserUserId = ${paramUserId}`
       );
       console.log("taskIds:", taskIds);
 
       const taskIdsPrimmed = taskIds[0];
 
       let response = [];
-      
+
       for(let i = 0; i < taskIdsPrimmed.length; i++) {
-        const taskIds = await db.sequelize.query(`
-          select task_id from Tasks
-          where task_id = ${taskIdsPrimmed[i]["task_id"]}      
+        const tagIds = await db.sequelize.query(`
+          select TagTagId from TagTasks
+          where TaskTaskId = ${taskIdsPrimmed[i]["task_id"]}     
         `, { type: QueryTypes.SELECT });
+
+        console.log("tagIds:", tagIds);
         response.push({
           task_id: taskIdsPrimmed[i]["tag_id"],
           task_name: taskIdsPrimmed[i]["task_name"],
-          description: taskIdsPrimmed[i]["description"],
-          status: taskIdsPrimmed[i]["status"],
-          created: taskIdsPrimmed[i]["created"],
-          due_date: taskIdsPrimmed[i]["due_date"],
-          priority: taskIdsPrimmed[i]["priority"],
-          tasks: taskIds
+          description: taskIdsPrimmed[i]["description"], //? taskIdsPrimmed[i]["description"] : NULL,
+          status: taskIdsPrimmed[i]["status"],// ? taskIdsPrimmed[i]["status"] : NULL,
+          createdAt: taskIdsPrimmed[i]["createdAt"],
+          updatedAt: taskIdsPrimmed[i]["updatedAt"],
+          due_date: taskIdsPrimmed[i]["due_date"],//? taskIdsPrimmed[i]["due_date"] : NULL,
+          priority: taskIdsPrimmed[i]["priority"], //? taskIdsPrimmed[i]["priority"] : NULL,
+          tasks: tagIds
         })
       }
 
@@ -90,6 +91,7 @@ exports.findAll = async (req, res) => {
 // Find a single Task with a task_id
 exports.findOne = (req, res) => {
   const paramTaskid = req.params.task_id;
+  console.log("paramTaskid", paramTaskid);
 
   Task.findByPk(paramTaskid)
     .then(data => {
@@ -109,28 +111,59 @@ exports.findOne = (req, res) => {
 };
 
 // Update a task by the id in the request
-exports.update = (req, res) => {
+exports.update = async (req, res) => {
   const task_id = req.params.task_id;
+  console.log("task_id", task_id, "body", req.body);
 
-  Task.update(req.body, {
-    where: { task_id: task_id }
-  })
-    .then(num => {
-      if (num == 1) {
-        res.send({
-          message: "Task was updated successfully."
-        });
-      } else {
-        res.send({
-          message: `Cannot update Task with task_id=${task_id}. Maybe task was not found or req.body is empty!`
-        });
-      }
-    })
-    .catch(err => {
+    Task.findOne({
+      where: { task_id: task_id }
+    }).then(async task => {
+      console.log("task", task, task["task_name"]);
+      task.set({
+        task_name: req.body.task_name ? req.body.task_name : task["task_name"],
+        task_name: req.body.description ? req.body.description : task["description"],
+        task_name: req.body.status ? req.body.status : task["status"],
+        task_name: req.body.due_date ? req.body.due_date : task["due_date"],
+        task_name: req.body.priority ? req.body.task_name : task["priority"],
+      });
+
+      await task.save();
+    }).catch(err => {
       res.status(500).send({
-        message: "Error updating task with id=" + task_id
+        message: "Could not update Task with id=" + task_id
       });
     });
+  //   console.log("task", task);
+  //   task.set({
+  //     // task_name: req.body.task_name ? req.body.task_name : task["task_name"],
+  //     description: req.body.description ? req.body.description : task["description"],
+  //     // status: req.body.status ? req.body.status : task["status"],
+  //     // due_date: req.body.due_date ? req.body.due_date : task["due_date"],
+  //     // priority: req.body.priority ? req.body.priority : task["priority"],
+  //   });
+  
+  //   await task.save();
+  // }
+  // catch(err) {
+  //   res.status(500).send({
+  //     message: "Error updating task with id=" + task_id
+  //   });
+  // }
+
+    // .then(async task => {
+    //   console.log("task", task, task["task_name"]);
+    //   task.set({
+    //     task_name: req.body.task_name ? req.body.task_name : task["task_name"],
+    //     task_name: req.body.description ? req.body.description : task["description"],
+    //     task_name: req.body.status ? req.body.status : task["status"],
+    //     task_name: req.body.due_date ? req.body.due_date : task["due_date"],
+    //     task_name: req.body.priority ? req.body.task_name : task["priority"],
+    //   });
+
+    //   await task.save();
+
+    // }) 
+    // .
 };
 
 // Delete a task with the specified task_id in the request
