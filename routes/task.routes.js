@@ -12,7 +12,7 @@ module.exports = app => {
   router.get("/task/:task_id", task.findOne); // done
 
   // Update a Task with id
-  router.put("/task/:task_id", task.update); 
+  router.put("/:task_id", task.update); 
 
   // Delete a Task with id
   router.delete("/:task_id", task.delete);  // done
