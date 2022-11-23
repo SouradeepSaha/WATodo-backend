@@ -124,13 +124,13 @@ exports.update = (req, res) => {
         });
       } else {
         res.send({
-          message: `Cannot update Task with task_id=${paramTaskid}. Maybe Task was not found or req.body is empty!`
+          message: `Cannot update Task with task_id=${param_task_id}. Maybe Task was not found or req.body is empty!`
         });
       }
     })
     .catch(err => {
       res.status(500).send({
-        message: "Error updating Tutorial with task_id=" + paramTaskid
+        message: "Error updating Tutorial with task_id=" + param_task_id
       });
     });
 };
