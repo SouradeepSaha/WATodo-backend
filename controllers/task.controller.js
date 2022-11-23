@@ -188,7 +188,7 @@ exports.update = (req, res) => {
 
     // }) 
     // .
-};
+// };
 
 // Delete a task with the specified task_id in the request
 exports.delete = (req, res) => {
