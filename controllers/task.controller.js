@@ -111,28 +111,52 @@ exports.findOne = (req, res) => {
 };
 
 // Update a task by the id in the request
-exports.update = async (req, res) => {
-  const task_id = req.params.task_id;
-  console.log("task_id", task_id, "body", req.body);
+exports.update = (req, res) => {
+  const param_task_id = req.params.task_id;
 
-    Task.findOne({
-      where: { task_id: task_id }
-    }).then(async task => {
-      console.log("task", task, task["task_name"]);
-      task.set({
-        task_name: req.body.task_name ? req.body.task_name : task["task_name"],
-        task_name: req.body.description ? req.body.description : task["description"],
-        task_name: req.body.status ? req.body.status : task["status"],
-        task_name: req.body.due_date ? req.body.due_date : task["due_date"],
-        task_name: req.body.priority ? req.body.task_name : task["priority"],
-      });
-
-      await task.save();
-    }).catch(err => {
+  Task.update(req.body, {
+    where: { task_id: param_task_id }
+  })
+    .then(num => {
+      if (num == 1) {
+        res.send({
+          message: "Task was updated successfully."
+        });
+      } else {
+        res.send({
+          message: `Cannot update Task with task_id=${paramTaskid}. Maybe Task was not found or req.body is empty!`
+        });
+      }
+    })
+    .catch(err => {
       res.status(500).send({
-        message: "Could not update Task with id=" + task_id
+        message: "Error updating Tutorial with task_id=" + paramTaskid
       });
     });
+};
+
+// exports.update = async (req, res) => {
+//   const task_id = req.params.task_id;
+//   console.log("task_id", task_id, "body", req.body);
+
+//     Task.findOne({
+//       where: { task_id: task_id }
+//     }).then(async task => {
+//       console.log("task", task, task["task_name"]);
+//       task.set({
+//         task_name: req.body.task_name ? req.body.task_name : task["task_name"],
+//         task_name: req.body.description ? req.body.description : task["description"],
+//         task_name: req.body.status ? req.body.status : task["status"],
+//         task_name: req.body.due_date ? req.body.due_date : task["due_date"],
+//         task_name: req.body.priority ? req.body.task_name : task["priority"],
+//       });
+
+//       await task.save();
+//     }).catch(err => {
+//       res.status(500).send({
+//         message: "Could not update Task with id=" + task_id
+//       });
+//     });
   //   console.log("task", task);
   //   task.set({
   //     // task_name: req.body.task_name ? req.body.task_name : task["task_name"],
