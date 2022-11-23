@@ -9,7 +9,7 @@ module.exports = app => {
   router.get("/:user_id", task.findAll); // done
 
   // Retrieve a single Task with id
-  router.get("/task/:task_id", task.findOne); // done
+  router.get("/:task_id", task.findOne); // done
 
   // Update a Task with id
   router.put("/:task_id", task.update); 
