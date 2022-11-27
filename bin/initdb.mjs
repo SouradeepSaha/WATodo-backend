@@ -4,7 +4,7 @@ import { generateUser } from "./data.mjs";
 const signupURI = 'http://localhost:8000/signup';
 
 
-for (let i = 0; i < 1000000; i++) {
+for (let i = 0; i < 100000; i++) {
   const user = generateUser();
   const response = await fetch(signupURI, {
     method: 'POST',
