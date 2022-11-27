@@ -9,6 +9,7 @@ exports.dashboard = (req, res) => {
 exports.verify = (req, res) => {
   const email = req.body.email;
   const verificationCode = req.body.verificationCode;
+  console.log
 
   User.findOne({
     where: {
@@ -21,9 +22,10 @@ exports.verify = (req, res) => {
       });
     }
     var userinfo = user.get();
+    console.log(userinfo);
     if (userinfo.verificationCode != verificationCode) {
       res.status(400).send("Incorrect verification code");
-    } else if (userinfo.verified) {
+    } else if (userinfo.verified == true) {
       res.status(400).send("User alreaedy verified");
     }
     else {

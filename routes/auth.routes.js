@@ -1,24 +1,43 @@
 const router = require("express").Router();
 const User = require("../controllers/user.controller");
+const signupValidator = require("../validators/signupValidator");
+const loginValidator = require("../validators/loginValidator")
+
 
 module.exports = (app, passport) => {
 
   function isLoggedIn(req, res, next) {
     if (req.isAuthenticated())
-      return next();
+    return next();
     res.status(401).send("Not Authorized");
   }
 
   //User Signup
-  router.post("/signup", passport.authenticate('local-signup', { failureMessage: true }),
-  function (req, res) {
-    res.status(200).send("Success");
+  router.post("/signup", signupValidator, function(req, res, next) {
+    passport.authenticate('local-signup', function(err, user, info) {
+      if (err) { return next(err); }
+      if (user) {
+        res.status(200).send({ user_id: user.user_id, name: user.username, email: user.email });
+      } else {
+        res.status(401);
+        res.end(info.message);
+        return;
+      }
+    })(req, res, next);
   });
 
   // User Login
-  router.post("/login", passport.authenticate('local-signin', { failureMessage: true }),
-    function (req, res) {
-    res.redirect('/dashboard/' + req.user.user_id);
+  router.post("/login", loginValidator, function(req, res, next) {
+    passport.authenticate('local-signin', function(err, user, info) {
+      if (err) { return next(err); }
+      if (user) {
+        res.status(200).send({ user_id: user.user_id, name: user.username, email: user.email });
+      } else {
+        res.status(401);
+        res.end(info.message);
+        return;
+      }
+    })(req, res, next);
   });
 
   // User Logout

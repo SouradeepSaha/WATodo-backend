@@ -25,7 +25,8 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         min: 1,
         max: 5
-      }
+      },
+      defaultValue: 5
     }
   });
   return Task;

@@ -1,18 +1,25 @@
 
 const db = require('../models');
-const { DataTypes } = require("sequelize")
+const { DataTypes, json } = require("sequelize")
 const User = require('../models/user.model.js')(db.sequelize, DataTypes)
 const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy
 const bCrypt = require('bcryptjs');
 const transporter = require("../email/email");
+const { validationResult } = require('express-validator');
 
 passport.use('local-signup', new LocalStrategy({
   usernameField: 'email',
   passwordField: 'password',
   passReqToCallback: true
 },
-function(req, email, password, done) {
+function (req, email, password, done) {
+  const validationErrors = validationResult(req);
+  console.log(validationErrors);
+  if (validationErrors.errors.length > 0) {
+    console.log(validationErrors.errors);
+    return done(null, false, { message: JSON.stringify(validationErrors) });
+  }
   var generateHash = function(password) {
     return bCrypt.hashSync(password, bCrypt.genSaltSync(8), null);
   };
@@ -45,13 +52,13 @@ function(req, email, password, done) {
             from: "Team@whattodo.com",
             to: email,
             subject: "Verification Code for WhatToDO",
-            text: "Hello " + name + ",\nWelcome to WhatToDo! Your verification code is " + verificationCode + ".\nSincerely,\nWhatToDo Team"
+            text: "Hello " + name + ",\nWelcome to WhatToDo! Your verification code is " + verificationCode + ".\n\nSincerely,\nWhatToDo Team"
           }
           transporter.sendMail(message, function (err, info) {
             if (err) {
               console.log(err)
               return done(null, false, {
-                message: "Failed to send email."
+                message: "Failed to send email. Please try again later."
               });
             } else {
               console.log(info);
@@ -72,7 +79,12 @@ passport.use('local-signin', new LocalStrategy(
     passwordField: 'password',
     passReqToCallback: true // allows us to pass back the entire request to the callback
   },
-  function(req, email, password, done) {
+  function (req, email, password, done) {
+    const validationErrors = validationResult(req);
+    if (validationErrors.errors.length > 0) {
+      console.log(validationErrors.errors);
+      return done(null, false, { message: JSON.stringify(validationErrors) });
+    }
     var isValidPassword = function(userpass, password) {
       return bCrypt.compareSync(password, userpass);
     }
