@@ -15,7 +15,7 @@ exports.create = (req, res) => {
 
   // Create a tag
   const tag = {
-    MemberUserId: req.body.user_id,
+    UserUserId: req.body.user_id,
     tag_name: req.body.tag_name,
     color: req.body.color,    
   };

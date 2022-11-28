@@ -10,6 +10,8 @@ const tasks = ['Prepare Dinner', 'Study for Exam', 'Another task', 'Job Search',
 
 const tags = ['Math 235', 'Groceries', 'Family', 'Tests', 'Exams', 'Others', 'Miscellaneous', 'Midterm', 'Online', 'Shopping', 'Lists', 'CS 341', 'CS 837', 'CO 912', 'School', 'University', 'Brother', 'Birthdays', 'MATH 237', 'Hello', 'Just a tag', 'Food', 'Extras', 'Shopping Spree', 'Diary', 'Ice cream', 'Calculator', 'What to Buy', 'Another Tag', 'Myself', 'Personal', 'Work', 'Headphones', 'CO 833', 'Graduate studies', 'Keyboard', 'Teachers', 'Thoughs', 'World Events', 'Current Affairs'];
 
+const colors = ["C2B078", "E5BE01", "CBD0CC", "734222", "49678D", "6D6552", "DE4C8A", "AEA04B", "CB2821", "497E76", "1E213D", "49678D", "BDECB6", "59351F", "A5A5A5", "781F19", "E1CC4F", "59351F", "00BB2D", "49678D"];
+
 const emails = ['@gmail.com', '@yahoo.com', '@aol.com', '@outlook.com', '@hotmail.com', '@uwaterloo.ca'];
 
 export function generateUser() {
@@ -30,5 +32,10 @@ export function generateTask() {
 }
 
 export function generateTag() {
-
+  let tag_name = _.sample(tags);
+  let color = _.sample(colors);
+  let user_id = _.random(1, 22000);
+  return {
+    tag_name, color, user_id
+  };
 }
