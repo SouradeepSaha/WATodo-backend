@@ -24,15 +24,15 @@ exports.verify = (req, res) => {
     var userinfo = user.get();
     console.log(userinfo);
     if (userinfo.verificationCode != verificationCode) {
-      res.status(400).send("Incorrect verification code");
+      res.status(400).send('{ "msg": "Incorrect Verification Code", "code": 406 }');
     } else if (userinfo.verified == true) {
-      res.status(400).send("User alreaedy verified");
+      res.status(400).send('{ "msg": "User Already Verified", "code": 407 }');
     }
     else {
       user.update({ verified: true })
       .then(function (row) {
         console.log(row);
-        res.status(200).send("success");
+        res.status(200).send('{ "msg": "success", "code": 200 }');
       }).catch(function (err) {
         console.log("Error:", err);
         res.status(400).send(err);
