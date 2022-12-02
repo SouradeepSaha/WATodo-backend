@@ -45,7 +45,7 @@ exports.findAll = async (req, res) => {
     try {
       const tagIds = await db.sequelize.query(`
         select distinct tag_id, tag_name, color from Tags
-        where MemberUserId = ${paramUserId}`
+        where UserUserId = ${paramUserId}`
       );
       console.log("tagIds:", tagIds);
 
