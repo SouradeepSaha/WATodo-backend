@@ -75,7 +75,7 @@ exports.findAll = async (req, res) => {
           updatedAt: taskIdsPrimmed[i]["updatedAt"],
           due_date: taskIdsPrimmed[i]["due_date"],//? taskIdsPrimmed[i]["due_date"] : NULL,
           priority: taskIdsPrimmed[i]["priority"], //? taskIdsPrimmed[i]["priority"] : NULL,
-          tasks: tagIds
+          tag_list: tagIds
         })
       }
 
