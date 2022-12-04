@@ -34,6 +34,7 @@ app.use(passport.session());
 require("./routes/tag.routes")(app);
 require("./routes/auth.routes")(app,passport);
 require("./routes/task.routes")(app);
+require("./routes/tagTask.routes")(app);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
