@@ -30,7 +30,7 @@ function (req, email, password, done) {
   }).then(function (user) {
     if (user) {
       return done(null, false, {
-        message: 'The email is already taken'
+        message: '{ "msg": "The email is already taken", "code": 301 }'
       });
     } else {
       var userPassword = generateHash(password);
@@ -97,17 +97,17 @@ passport.use('local-signin', new LocalStrategy(
     }).then(function(user) {
       if (!user) {
         return done(null, false, {
-          message: 'Email does not exist'
+          message: '{ "msg": "Email does not exist", "code": 402 }'
         });
       }
       if (!isValidPassword(user.password, password)) {
         return done(null, false, {
-          message: 'Incorrect password.'
+          message: '{ "msg": "Incorrect Password", "code": 403 }'
         });
       }
       if (!user.verified) {
         return done(null, false, {
-          message: 'User not verified'
+          message: '{ "msg": "User not verified", "code": 404 }'
         });
       }
       var userinfo = user.get();
@@ -115,7 +115,7 @@ passport.use('local-signin', new LocalStrategy(
     }).catch(function(err) {
       console.log("Error:", err);
       return done(null, false, {
-        message: 'Something went wrong with your Login'
+        message: '{ "msg": "Something went wrong with your Login", "code": 405 }'
       });
     });
   }

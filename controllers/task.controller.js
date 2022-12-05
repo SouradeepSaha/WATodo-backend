@@ -67,7 +67,7 @@ exports.findAll = async (req, res) => {
 
         console.log("tagIds:", tagIds);
         response.push({
-          task_id: taskIdsPrimmed[i]["tag_id"],
+          task_id: taskIdsPrimmed[i]["task_id"],
           task_name: taskIdsPrimmed[i]["task_name"],
           description: taskIdsPrimmed[i]["description"], //? taskIdsPrimmed[i]["description"] : NULL,
           status: taskIdsPrimmed[i]["status"],// ? taskIdsPrimmed[i]["status"] : NULL,
@@ -75,7 +75,7 @@ exports.findAll = async (req, res) => {
           updatedAt: taskIdsPrimmed[i]["updatedAt"],
           due_date: taskIdsPrimmed[i]["due_date"],//? taskIdsPrimmed[i]["due_date"] : NULL,
           priority: taskIdsPrimmed[i]["priority"], //? taskIdsPrimmed[i]["priority"] : NULL,
-          tasks: tagIds
+          tag_list: tagIds
         })
       }
 
