@@ -1,6 +1,6 @@
 
 const db = require('../models');
-const { DataTypes, json } = require("sequelize")
+const { DataTypes, json, Op } = require("sequelize")
 const User = require('../models/user.model.js')(db.sequelize, DataTypes)
 const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy
@@ -13,29 +13,26 @@ passport.use('local-signup', new LocalStrategy({
   passwordField: 'password',
   passReqToCallback: true
 },
-function (req, email, password, done) {
-  const validationErrors = validationResult(req);
-  console.log(validationErrors);
-  if (validationErrors.errors.length > 0) {
-    console.log(validationErrors.errors);
-    return done(null, false, { message: JSON.stringify(validationErrors) });
-  }
-  var generateHash = function(password) {
-    return bCrypt.hashSync(password, bCrypt.genSaltSync(8), null);
-  };
-  const username = req.body.username;
-  console.log(username);
-  User.findOne({
-    where: {
-      $or: [
-        { email: email },
-        { username: username }
-      ]
+  function (req, email, password, done) {
+    const validationErrors = validationResult(req);
+    console.log(validationErrors);
+    if (validationErrors.errors.length > 0) {
+      console.log(validationErrors.errors);
+      return done(null, false, { message: JSON.stringify(validationErrors) });
+    }
+    var generateHash = function (password) {
+      return bCrypt.hashSync(password, bCrypt.genSaltSync(8), null);
+    };
+    const username = req.body.username;
+    console.log(username);
+    User.findOne({
+      where: {
+        [Op.or]: [{email: email}, {username: username}]
     }
   }).then(function (user) {
     if (user) {
       return done(null, false, {
-        message: '{ "msg": "The email and/or username is already taken", "code": 301 }'
+        message: '{ "msg": "The email and/or username is already taken", "code": 401 }'
       });
     } else {
       var userPassword = generateHash(password);
