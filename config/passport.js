@@ -48,6 +48,8 @@ function (req, email, password, done) {
           return done(null, false);
         }
         if (newUser) {
+          return done(null, newUser);
+
           message = {
             from: "Team@whattodo.com",
             to: email,
