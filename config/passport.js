@@ -24,6 +24,7 @@ function (req, email, password, done) {
     return bCrypt.hashSync(password, bCrypt.genSaltSync(8), null);
   };
   const username = req.body.username;
+  console.log(username);
   User.findOne({
     where: {
       $or: [
@@ -34,7 +35,7 @@ function (req, email, password, done) {
   }).then(function (user) {
     if (user) {
       return done(null, false, {
-        message: '{ "msg": "The email is already taken", "code": 301 }'
+        message: '{ "msg": "The email and/or username is already taken", "code": 301 }'
       });
     } else {
       var userPassword = generateHash(password);
