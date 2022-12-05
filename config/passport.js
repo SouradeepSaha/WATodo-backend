@@ -30,7 +30,7 @@ function (req, email, password, done) {
   }).then(function (user) {
     if (user) {
       return done(null, false, {
-        message: 'The email is already taken'
+        message: '{ "msg": "The email is already taken", "code": 301 }'
       });
     } else {
       var userPassword = generateHash(password);
@@ -48,6 +48,8 @@ function (req, email, password, done) {
           return done(null, false);
         }
         if (newUser) {
+          return done(null, newUser);
+
           message = {
             from: "Team@whattodo.com",
             to: email,
