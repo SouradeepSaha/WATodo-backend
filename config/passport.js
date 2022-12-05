@@ -23,9 +23,13 @@ function (req, email, password, done) {
   var generateHash = function(password) {
     return bCrypt.hashSync(password, bCrypt.genSaltSync(8), null);
   };
+  const username = req.body.username;
   User.findOne({
     where: {
-      email: email
+      $or: [
+        { email: email },
+        { username: username }
+      ]
     }
   }).then(function (user) {
     if (user) {
@@ -40,7 +44,7 @@ function (req, email, password, done) {
         email: email,
         password: userPassword,
         name: name,
-        username: req.body.username,
+        username: username,
         verificationCode: verificationCode
       };
       User.create(data).then(function(newUser, created) {
