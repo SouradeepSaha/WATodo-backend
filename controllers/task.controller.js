@@ -5,18 +5,19 @@ const { QueryTypes } = require('sequelize');
 // Create, Delete, Update, Find One, Find all
 
 // Create and Save a new Task
-exports.create = (req, res) => {
+exports.create = async (req, res) => {
      // Validate request
      // check for null values too? "!due_date"?
     if (!req.body.task_name || !req.body.user_id) {
-    res.status(400).send({
-      message: "Some task information is missing!"
-    });
-    return;
+      res.status(400).send({
+        message: "Some task information is missing!"
+      });
+      return;
     }
 
     // create a task
-    const task = {
+    try {
+      const task = {
         UserUserId: req.body.user_id,
         task_name: req.body.task_name,
         description: req.body?.description, // ? req.body.description : NULL,
@@ -25,22 +26,20 @@ exports.create = (req, res) => {
         due_date: req.body?.due_date,// ? req.body.due_date : NULL,
         priority: req.body?.priority //? req.body.priority : 5
     };
-    console.log(task);
 
-    // Save Task in database
-    Task.create(task)
-    .then(() => {
+      // Save Task in database
+      const newly_created_task = await Task.create(task);
+
       res.status(201).send({
-        message:
-          "Task created successfully."
+        task_id: newly_created_task.task_id,
+        message: "Task created successfully."
       });
-    })
-    .catch(err => {
+    } catch(err) {
       res.status(500).send({
-        message:
-          err.message || "Some error occurred while creating the task."
-      });
-    });
+            message:
+              err.message || "Some error occurred while creating the task."
+          });
+    }
 };
 
 // List of all tasks embedded with users
