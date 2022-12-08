@@ -198,7 +198,8 @@ VALUES('My Task 0', 'delectus aut autem', 'NOT STARTED', '1990-01-06', '1990-06-
 ('My Task 196', 'dignissimos quo nobis earum saepe', 'NOT STARTED', '1990-09-10', '1990-08-07', '1990-06-05', 2, '10'),
 ('My Task 197', 'quis eius est sint explicabo', 'COMPLETED', '1990-02-14', '1991-01-02', '1990-11-06', 4, '10'),
 ('My Task 198', 'numquam repellendus a magnam', 'COMPLETED', '1990-07-26', '1990-06-28', '1990-12-02', 4, '10'),
-('My Task 199', 'ipsam aperiam voluptates qui', 'NOT STARTED', '1990-05-25', '1990-06-13', '1990-06-25', 5, '10')INSERT INTO cs348.Tags (tag_name, user_id)
+('My Task 199', 'ipsam aperiam voluptates qui', 'NOT STARTED', '1990-05-25', '1990-06-13', '1990-06-25', 5, '10');
+INSERT INTO cs348.Tags (tag_name, user_id)
 VALUES('Tag 0', '1'),
 ('Tag 1', '1'),
 ('Tag 2', '1'),
@@ -398,7 +399,8 @@ VALUES('Tag 0', '1'),
 ('Tag 196', '10'),
 ('Tag 197', '10'),
 ('Tag 198', '10'),
-('Tag 199', '10')INSERT INTO cs348.users (username, email, password, name)
+('Tag 199', '10');
+INSERT INTO cs348.users (username, email, password, name)
 VALUES('user 0', 'user0@gmail.com', 'useR@!30Pass', 'FirstName LastName'),
 ('user 1', 'user1@gmail.com', 'useR@!31Pass', 'FirstName LastName'),
 ('user 2', 'user2@gmail.com', 'useR@!32Pass', 'FirstName LastName'),
@@ -598,7 +600,8 @@ VALUES('user 0', 'user0@gmail.com', 'useR@!30Pass', 'FirstName LastName'),
 ('user 196', 'user196@gmail.com', 'useR@!3196Pass', 'FirstName LastName'),
 ('user 197', 'user197@gmail.com', 'useR@!3197Pass', 'FirstName LastName'),
 ('user 198', 'user198@gmail.com', 'useR@!3198Pass', 'FirstName LastName'),
-('user 199', 'user199@gmail.com', 'useR@!3199Pass', 'FirstName LastName')INSERT INTO todo_task (task_name, task_description, status, task_created, task_started, task_due, priority, user_id)
+('user 199', 'user199@gmail.com', 'useR@!3199Pass', 'FirstName LastName');
+INSERT INTO todo_task (task_name, task_description, status, task_created, task_started, task_due, priority, user_id)
 VALUES('My Task 0', 'delectus aut autem', 'COMPLETED', '1990-04-01', '1991-02-25', '1991-02-28', 2, '1'),
 ('My Task 1', 'quis ut nam facilis et officia qui', 'COMPLETED', '1990-07-19', '1990-06-28', '1990-10-27', 2, '1'),
 ('My Task 2', 'fugiat veniam minus', 'IN PROGRESS', '1990-06-27', '1990-11-06', '1990-10-16', 1, '1'),
