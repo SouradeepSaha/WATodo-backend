@@ -50,7 +50,7 @@ passport.use('local-signup', new LocalStrategy({
           return done(null, false);
         }
         if (newUser) {
-          return done(null, newUser);
+          //return done(null, newUser);
 
           message = {
             from: "Team@whattodo.com",
@@ -62,7 +62,7 @@ passport.use('local-signup', new LocalStrategy({
             if (err) {
               console.log(err)
               return done(null, false, {
-                message: "Failed to send email. Please try again later."
+                message: '{ "msg": "Failed to send verification email", "code": 401 }'
               });
             } else {
               console.log(info);
