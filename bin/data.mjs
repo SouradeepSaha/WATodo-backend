@@ -14,6 +14,8 @@ const colors = ["C2B078", "E5BE01", "CBD0CC", "734222", "49678D", "6D6552", "DE4
 
 const emails = ['@gmail.com', '@yahoo.com', '@aol.com', '@outlook.com', '@hotmail.com', '@uwaterloo.ca'];
 
+const descriptions = ["Get stationaries from grocery stores first", "Create Pomodoro Timer for study routine", "Complete Written Assignments", "Meet with TA to discuss", "Buy monitor to assist in programming", "Prepare recipe for dinner", "Should discuss business opportunities with friends", "Think about entrepreurship", "Create grocery shopping list", "I don't know what to put in the description", "I am very excited for this!", "Browse Netflix for some good documentaries"]
+
 export function generateUser() {
   let fName = _.sample(firstNames);
   let lName = _.sample(lastNames);
@@ -28,7 +30,16 @@ export function generateUser() {
 }
 
 export function generateTask() {
+  let user_id = _.random(1, 22000);
+  let task_name = _.sample(tasks);
+  let description = _.sample(descriptions);
+  let priority = _.random(1, 5);
+  let status = _.random(0, 2);
+  let due_date = "";
 
+  return {
+    user_id, task_name, description, priority, status, due_date;
+  }
 }
 
 export function generateTag() {

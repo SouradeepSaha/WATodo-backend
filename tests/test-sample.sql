@@ -1,9 +1,14 @@
 --feature 1: insert a new member at sign up
 INSERT INTO Users (username, email, password, name) VALUES
 ("johnsmith", "johnsmith@gmail.com", PasS@Wor93v, "John Smith");
- 
+
 --feature 2: check whether user with credentials exists at log in
-SELECT username FROM Users where username like "andrewdawson178908";
+SELECT Verified FROM cs348.Users WHERE EXISTS (
+SELECT * FROM Users
+WHERE email = “andrewdawson178908”);
+
+SELECT * FROM cs348.Users
+WHERE email = “andrewdawson178908” AND password = “hashedPassword”;
 
 --feature 3: delete tasks
 DELETE FROM cs348.Tasks WHERE task_id= "1435";
@@ -26,4 +31,3 @@ select * from Tasks
 where task_id not in (
 select TaskTaskId as task_id from TagTasks
 ) and UserUserId = 103;
-
