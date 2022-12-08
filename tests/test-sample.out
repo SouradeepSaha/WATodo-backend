@@ -5,26 +5,28 @@ INSERT INTO Users (username, email, password, name) VALUES
 1 row(s) affected	0.016 sec
 
 feature 2 output:
-SELECT username FROM Users where username like "andrewdawson178908";
-+--------------------+
-| username           |
-+--------------------+
-| andrewdawson178908 |
-+--------------------+
-1 row in set (0.04 sec)
+SELECT * FROM Users
+WHERE email = "elijones662283@gmail.com" AND password = "$2a$08$yPa4CGd1Injn8ebfJjQeoeAWAXqcoh4ggZ79FG5YuH15xZ.ZkEc.m";
++---------+----------------+--------------------------+--------------------------------------------------------------+-----------+----------+------------------+---------------------+---------------------+
+| user_id | username       | email                    | password                                                     | name      | verified | verificationCode | createdAt           | updatedAt           |
++---------+----------------+--------------------------+--------------------------------------------------------------+-----------+----------+------------------+---------------------+---------------------+
+|      75 | elijones662283 | elijones662283@gmail.com | $2a$08$yPa4CGd1Injn8ebfJjQeoeAWAXqcoh4ggZ79FG5YuH15xZ.ZkEc.m | Eli Jones |        0 |           187332 | 2022-11-27 19:35:10 | 2022-11-27 19:35:10 |
++---------+----------------+--------------------------+--------------------------------------------------------------+-----------+----------+------------------+---------------------+---------------------+
+1 row in set (0.03 sec)
+
 
 feature 3 output:
-DELETE FROM cs348.Tasks WHERE task_id= "1435";
+DELETE FROM cs348.Tasks WHERE task_id= "60";
 Query OK, 1 row affected (0.04 sec)
  
 1 row(s) affected	0.032 sec
 
 feature 4 output:
-UPDATE cs348.Tasks SET task_name = 'modified task name' WHERE task_id = 1435;
+UPDATE cs348.Tasks SET task_name = 'modified task name' WHERE task_id = 123;
 Query OK, 0 rows affected (0.03 sec)
 Rows matched: 0  Changed: 0  Warnings: 0
 
-UPDATE cs348.Tasks SET task_name = 'modified task name' WHERE task_id = 1436;
+UPDATE cs348.Tasks SET task_name = 'modified task name' WHERE task_id = 124;
 Query OK, 1 row affected (0.04 sec)
 Rows matched: 1  Changed: 1  Warnings: 0
 

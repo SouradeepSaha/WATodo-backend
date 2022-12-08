@@ -1,0 +1,58 @@
+feature 1 output:
+INSERT INTO cs348.Users (username, email, password, name) VALUES
+("johnbaker23", "johnbaker23@gmail.com", "PasS@Wor93,v," "John Baker");
+
+1 row(s) affected	0.020 sec
+
+feature 2 output:
+SELECT * FROM Users
+WHERE email = “richarddavison566872@yahoo.com” AND password = “$2a$08$VaBjCFUh.559weL1BG9Uu.QDfFNhCcskTX2w3jHmjGflFhTnfzcIW”;
++---------+----------------------+--------------------------------+--------------------------------------------------------------+-----------------+----------+------------------+---------------------+---------------------+
+| user_id | username             | email                          | password                                                     | name            | verified | verificationCode | createdAt           | updatedAt           |
++---------+----------------------+--------------------------------+--------------------------------------------------------------+-----------------+----------+------------------+---------------------+---------------------+
+|    1032 | richarddavison566872 | richarddavison566872@yahoo.com | $2a$08$VaBjCFUh.559weL1BG9Uu.QDfFNhCcskTX2w3jHmjGflFhTnfzcIW | Richard Davison |        0 |           153135 | 2022-11-27 19:42:06 | 2022-11-27 19:42:06 |
++---------+----------------------+--------------------------------+--------------------------------------------------------------+-----------------+----------+------------------+---------------------+---------------------+
+1 row in set (0.03 sec)
+
+feature 3 output:
+DELETE FROM cs348.Tasks WHERE task_id= “11000”;
+Query OK, 1 row affected (0.04 sec)
+
+1 row(s) affected	0.054 sec
+
+feature 4 output:
+UPDATE Tasks SET task_name = 'NoFrills shoppings' WHERE task_id = 12367;
+Query OK, 1 row affected (0.03 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+feature 5 output:
+create view feature5TasksWithTag AS
+select TaskTaskId
+from TagTasks
+where TagTagId = 3969;
+Query OK, 0 rows affected (0.06 sec)
+
+select * from Tasks, feature5TasksWithTag
+where Tasks.Task_id = feature5TasksWithTag.TaskTaskId;
++---------+-------------------+-------------+-------------+---------------------+----------+---------------------+---------------------+------------+------------+
+| task_id | task_name         | description | status      | due_date            | priority | createdAt           | updatedAt           | UserUserId | TaskTaskId |
++---------+-------------------+-------------+-------------+---------------------+----------+---------------------+---------------------+------------+------------+
+|    4529 | Electric Vehicles | bright      | In Progress | 2022-12-18 11:59:59 |        4 | 2022-11-28 02:40:15 | 2022-11-28 02:40:17 |       3849 |       4529 |
+|    6409 | Go shopping       | creepy      | Not Started | 2022-12-30 11:59:59 |        4 | 2022-11-28 02:40:42 | 2022-11-28 02:40:44 |       2387 |       6409 |
++---------+-------------------+-------------+-------------+---------------------+----------+---------------------+---------------------+------------+------------+
+2 rows in set (0.03 sec)
+
+
+feature 6 output:
+select * from Tasks
+where task_id not in (
+select TaskTaskId as task_id from TagTasks
+) and UserUserId = 436;
+
++---------+-----------+-------------+-----------+---------------------+----------+---------------------+---------------------+------------+
+| task_id | task_name | description | status    | due_date            | priority | createdAt           | updatedAt           | UserUserId |
++---------+-----------+-------------+-----------+---------------------+----------+---------------------+---------------------+------------+
+|   11526 | Awarness  | adventurous | Completed | 2022-12-17 11:59:59 |        1 | 2022-11-28 02:40:49 | 2022-11-28 02:40:51 |        436 |
++---------+-----------+-------------+-----------+---------------------+----------+---------------------+---------------------+------------+
+1 row in set (0.03 sec)
+
