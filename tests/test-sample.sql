@@ -26,4 +26,4 @@ where Tasks.Task_id = TasksWithTag.TaskTaskId;
 select * from Tasks
 where task_id not in (
 select TaskTaskId as task_id from TagTasks
-) and UserUserId = 103;
+) and UserUserId = 97;
