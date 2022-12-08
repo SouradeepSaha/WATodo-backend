@@ -1,0 +1,60 @@
+feature 1 output:
+INSERT INTO Users (username, email, password, name) VALUES
+("johnsmith", "johnsmith@gmail.com", PasS@Wor93v, "John Smith");
+ 
+1 row(s) affected	0.016 sec
+
+feature 2 output:
+SELECT username FROM Users where username like "andrewdawson178908";
++--------------------+
+| username           |
++--------------------+
+| andrewdawson178908 |
++--------------------+
+1 row in set (0.04 sec)
+
+feature 3 output:
+DELETE FROM cs348.Tasks WHERE task_id= "1435";
+Query OK, 1 row affected (0.04 sec)
+ 
+1 row(s) affected	0.032 sec
+
+feature 4 output:
+UPDATE cs348.Tasks SET task_name = 'modified task name' WHERE task_id = 1435;
+Query OK, 0 rows affected (0.03 sec)
+Rows matched: 0  Changed: 0  Warnings: 0
+
+UPDATE cs348.Tasks SET task_name = 'modified task name' WHERE task_id = 1436;
+Query OK, 1 row affected (0.04 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+feature 5 output:
+create view TasksWithTag AS
+select TaskTaskId
+from TagTasks
+where TagTagId = 10;
+Query OK, 0 rows affected (0.04 sec)
+
+select * from Tasks, TasksWithTag
+where Tasks.Task_id = TasksWithTag.TaskTaskId;
++---------+---------------------+-------------+-------------+---------------------+----------+---------------------+---------------------+------------+------------+
+| task_id | task_name           | description | status      | due_date            | priority | createdAt           | updatedAt           | UserUserId | TaskTaskId |
++---------+---------------------+-------------+-------------+---------------------+----------+---------------------+---------------------+------------+------------+
+|    1855 | Drawing Tablet      | clever      | Completed   | 2022-12-22 11:59:59 |        5 | 2022-11-28 02:40:21 | 2022-11-28 02:40:23 |       1142 |       1855 |
+|    6013 | Meet with Professor | concerned   | Completed   | 2022-12-15 11:59:59 |        5 | 2022-11-28 02:40:28 | 2022-11-28 02:40:30 |       1430 |       6013 |
+|    7966 | Go to church        | clumsy      | Not Started | 2022-12-27 11:59:59 |        4 | 2022-11-28 02:40:54 | 2022-11-28 02:40:56 |       9705 |       7966 |
++---------+---------------------+-------------+-------------+---------------------+----------+---------------------+---------------------+------------+------------+
+3 rows in set (0.03 sec)
+
+feature 6 output:
+select * from Tasks
+where task_id not in (
+select TaskTaskId as task_id from TagTasks
+) and UserUserId = 103;
++---------+-----------------+-------------+-------------+---------------------+----------+---------------------+---------------------+------------+
+| task_id | task_name       | description | status      | due_date            | priority | createdAt           | updatedAt           | UserUserId |
++---------+-----------------+-------------+-------------+---------------------+----------+---------------------+---------------------+------------+
+|   13208 | Buy new AirPods | curious     | Not Started | 2022-12-08 11:59:59 |        4 | 2022-11-28 02:40:33 | 2022-11-28 02:40:35 |        103 |
+|   17054 | Study for Exam  | crazy       | Not Started | 2022-12-03 11:59:59 |        1 | 2022-11-28 02:40:23 | 2022-11-28 02:40:25 |        103 |
++---------+-----------------+-------------+-------------+---------------------+----------+---------------------+---------------------+------------+
+2 rows in set (0.03 sec)
