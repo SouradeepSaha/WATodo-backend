@@ -799,3 +799,35 @@ VALUES('My Task 0', 'delectus aut autem', 'COMPLETED', '1990-04-01', '1991-02-25
 ('My Task 197', 'quis eius est sint explicabo', 'COMPLETED', '1990-08-03', '1990-09-20', '1990-06-12', 5, '10'),
 ('My Task 198', 'numquam repellendus a magnam', 'COMPLETED', '1990-07-12', '1990-06-28', '1990-05-14', 1, '10'),
 ('My Task 199', 'ipsam aperiam voluptates qui', 'IN PROGRESS', '1990-04-06', '1990-07-05', '1991-04-01', 5, '10')
+
+SELECT * FROM cs348.Users WHERE email = “johnbaker23@gmail.com”;
+INSERT INTO cs348.Users (username, email, password, name) VALUES
+(‘johnbaker23’, ‘johnbaker23@gmail.com’, ‘PasS@Wor93,v, ‘John Baker’);
+
+SELECT Verified FROM cs348.Users WHERE EXISTS (
+SELECT * FROM cs348.Users
+WHERE email = “johnbaker23@gmail.com”);
+SELECT * FROM Users
+WHERE email = “johnbaker23@gmail.com” AND password = “hashedPassword”;
+
+DELETE FROM cs348.Tasks WHERE task_id= “11000”;
+UPDATE cs348.Tasks SET task_name = 'Assignment 3.3' WHERE task_id = 1234;
+UPDATE cs348.Tasks SET description = 'Almost done, need to go to office hours' WHERE task_id = 4567;
+UPDATE cs348.Tasks SET status = 'Completed' WHERE task_id = 2345;
+UPDATE cs348.Tasks SET priority = 2 WHERE task_id = 5678;
+UPDATE cs348.Tasks SET due_date = '2022-12-24 11:59:59' WHERE task_id = 10678;
+UPDATE cs348.Tasks SET priority = 1, task_name = 'Get Milk' WHERE task_id = 1178;
+UPDATE cs348.Tasks SET priority = 3, task_name = 'Finish Group project', status = 'Done'  WHERE task_id = 15178;
+
+SELECT * from Tasks, TasksWithTag
+WHERE Tasks.TaskID = TasksWithTag.TaskID;
+
+CREATE VIEW TasksWithTag AS
+SELECT TaskID
+FROM TagsInTasks
+WHERE TagId = uservalue;
+
+SELECT task_id
+FROM Tasks
+  FULL JOIN TagTasks ON (task_id = TagTasks.TaskTaskId)
+WHERE task_id IS NULL OR TagTasks.TaskTaskId IS NULL;
