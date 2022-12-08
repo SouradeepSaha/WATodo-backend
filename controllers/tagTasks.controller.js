@@ -61,7 +61,7 @@ exports.delete = async (req, res) => {
 
         await tag_id.removeTask(task_id, { through: 'TagTasks' });
 
-        res.status(204).send({
+        res.status(202).send({
             message: `tag_id ${req.body.tag_id} and task_id ${req.body.task_id} link removed successfully!`
         });
 
