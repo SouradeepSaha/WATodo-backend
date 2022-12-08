@@ -70,7 +70,7 @@ def populateTagTasks(tags, tasks):
                                   database='cs348')
     c = con.cursor()
     
-    val = getval(tasks, tags)
+    val = getval(tags, tasks)
 
     for i in range(15000):
         sql = "INSERT INTO cs348.TagTasks (createdAt, updatedAt, TagTagId, TaskTaskId) VALUES "
