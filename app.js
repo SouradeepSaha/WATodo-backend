@@ -30,6 +30,7 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
+require("./routes/user.routes")(app);
 require("./routes/tag.routes")(app);
 require("./routes/auth.routes")(app,passport);
 require("./routes/task.routes")(app);

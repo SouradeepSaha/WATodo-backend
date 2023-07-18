@@ -1,4 +1,4 @@
-const User = require("../controllers/task.controller.js");
+const User = require("../controllers/user.controller");
 var router = require("express").Router();
 
 module.exports = app => {

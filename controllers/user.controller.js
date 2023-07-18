@@ -9,7 +9,6 @@ exports.dashboard = (req, res) => {
 exports.verify = (req, res) => {
   const email = req.body.email;
   const verificationCode = req.body.verificationCode;
-  console.log
 
   User.findOne({
     where: {
